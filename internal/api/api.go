@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"log/slog"
 	"net/http"
 	"sync"
@@ -185,7 +184,6 @@ func (handler apiHandler) handleGetRooms(w http.ResponseWriter, r *http.Request)
 func (handler apiHandler) handleGetRoomMessages(w http.ResponseWriter, r *http.Request) {}
 
 func (handler apiHandler) handleCreateRoomMessage(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Hello")
 	rawRoomID := chi.URLParam(r, "room_id")
 	roomID, err := uuid.Parse(rawRoomID)
 	if err != nil {
