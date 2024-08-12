@@ -1,8 +1,12 @@
+import { Suspense } from "react";
 import { useParams } from "react-router";
+
 import { toast } from "sonner";
-import { ArrowRight, Share2 } from "lucide-react";
+import { Share2 } from "lucide-react";
 import amaIcon from "../assets/ama-logo.svg"
-import { Message } from "../components/message";
+
+import { Messages } from "../components/messages";
+import { CreateMessageForm } from "../components/create-message-form";
 
 export function Room() {
   const { roomID } = useParams();
@@ -40,29 +44,11 @@ export function Room() {
       </div>
       <div className="h-px w-full bg-base-zinc-900"/>
 
-      <form 
-          className="bg-base-zinc-900 border border-base-zinc-800 flex justify-between items-center p-2 rounded-xl gap-2 ring-principal-orange-400 ring-offset-base-zinc-950 ring-offset-2 focus-within:ring-1"
-        >
-          <input 
-            className="placeholder-base-zinc-500 bg-transparent outline-none box-content flex-1 text-sm text-base-zinc-100 ml-2" 
-            placeholder="Ask something"
-            autoComplete="off"
-          />
-        <button 
-            className="bg-principal-orange-400 px-3 py-2 gap-1.5 flex items-center rounded-lg text-principal-orange-500 font-medium text-sm hover:opacity-75 transition-opacity ease-in duration-200"
-            type="submit"
-          >
-            Ask!
-            <ArrowRight className="size-4"/>
-          </button>
-      </form>
-
-      <ol className="list-decimal list-outside px-3 space-y-8">
-        <Message 
-          comment="Which programming language should I use in my backend: Go or NodeJS?"
-          numberOfLikes={123}
-        />
-      </ol>
+      <CreateMessageForm />
+      
+      <Suspense fallback={<p>Loading...</p>}>
+        <Messages />
+      </Suspense>
     </div> 
   )
 }

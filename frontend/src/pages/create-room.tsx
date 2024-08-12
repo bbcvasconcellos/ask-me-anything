@@ -1,22 +1,31 @@
 import { FormEvent, useRef } from "react";
 import { useNavigate } from "react-router";
+
+import { toast } from "sonner";
 import { ArrowRight } from "lucide-react";
 
 import amaLogo from "../assets/ama-logo.svg";
+import { createRoom } from "../api/create-room";
 
 export function CreateRoom() {
   const navigate = useNavigate();
   const ref = useRef<HTMLInputElement>(null);
 
-  const handleCreateRoom = (event: FormEvent) => {
+  const handleCreateRoom = async (event: FormEvent) => {
     event.preventDefault();
+    const theme = ref.current?.value.toString();
 
-    if(!ref.current?.value) {
-      return 
+    if(!theme) {
+      toast.warning("Room theme not found");
+      return;
     }
-
-    const roomName = ref.current?.value;
-    navigate(`/room/${roomName}`)
+    try {
+      const { roomID } = await createRoom({ theme });
+      navigate(`/room/${roomID}`);
+    } catch(err) {
+      console.error("Error", err);
+      toast.warning("Failed to create room.")
+    }
   }
 
   return (
@@ -36,6 +45,7 @@ export function CreateRoom() {
             name="theme"  
             autoComplete="off"
             ref={ref}
+            required
           />
           <button 
             className="bg-principal-orange-400 px-3 py-2 gap-1.5 flex items-center rounded-lg text-principal-orange-500 font-medium text-sm hover:opacity-75 transition-opacity ease-in duration-200"
