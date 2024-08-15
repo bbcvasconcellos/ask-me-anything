@@ -5,7 +5,6 @@ interface GetRoomMessagesRequest {
 export interface GetRoomMessagesResponse {
   messages: {
     id: string;
-    roomID: string;
     likes: number;
     comment: string;
     answered: boolean;
